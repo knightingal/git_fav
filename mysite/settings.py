@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'polls',
+    'git_proxy',
 )
 
 MIDDLEWARE_CLASSES = (
