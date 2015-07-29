@@ -20,4 +20,5 @@ urlpatterns = [
     url(r'^polls/', include('polls.urls', namespace='polls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^git-proxy/', include('git_proxy.urls')),
+    url(r'^local1000/', include('local1000site.urls')),
 ]
