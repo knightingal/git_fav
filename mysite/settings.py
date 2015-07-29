@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'polls',
     'git_proxy',
+    'local1000site',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -105,3 +106,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# How to do
+
+# python manage.py startapp polls
+# python manage.py makemigrations polls
+# python manage.py sqlmigrate polls 0001
+# python manage.py migrate
