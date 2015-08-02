@@ -11,3 +11,7 @@ def index(requeset):
         'pic_repertories': pic_repertories,
     })
     return HttpResponse(template.render(context))
+
+def urls1000(request):
+    print request.get_full_path()
+    return HttpResponse("get urls1000")
