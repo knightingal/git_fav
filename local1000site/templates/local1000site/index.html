@@ -3,7 +3,9 @@
         {% for pic_repertory in pic_repertories %}
             <li>
                 <!--<a href="/polls/{{ question.id }}/">{{ question.question_text }}</a>-->
+                <a href="/local1000/repertory/{{ pic_repertory.id }}/">
                 {{ pic_repertory.rep_name }}
+                </a>
             </li>
         {% endfor %}
     </ul>

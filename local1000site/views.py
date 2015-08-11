@@ -26,6 +26,9 @@ def urls1000(request):
     for url in img_src_array:
         http.download(url)
 
+def repertory(request, rep_id):
+    return HttpResponse("repertory, rep_id = " + str(rep_id))
+
 
     # fp = codecs.open(title, 'w',  'utf-8')
     # fp.write(title)
