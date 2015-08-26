@@ -1,0 +1,10 @@
+<h1>
+    {{ pic_repertory.rep_name }}
+</h1>
+<ul>
+    {% for pic_instance in pic_instances %}
+    <li>
+        {{ pic_instance.pic_name }}
+    </li>
+    {% endfor %}
+</ul>
