@@ -107,6 +107,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS= (
+    os.path.join(BASE_DIR, "static"),
+    'D:/Python27/testdir/testsubdir/linux1000/',
+)
+
 # How to do
 
 # python manage.py startapp polls

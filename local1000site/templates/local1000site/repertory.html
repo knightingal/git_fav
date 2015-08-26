@@ -1,10 +1,10 @@
 <h1>
     {{ pic_repertory.rep_name }}
 </h1>
-<ul>
+
     {% for pic_instance in pic_instances %}
-    <li>
-        {{ pic_instance.pic_name }}
-    </li>
+
+    <img src="http://127.0.0.1:8000/static/{{ pic_repertory.rep_name }}/{{ pic_instance.pic_name }}" />
+
     {% endfor %}
-</ul>
+
