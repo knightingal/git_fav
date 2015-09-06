@@ -2,6 +2,7 @@ import httplib
 import re
 def download(url):
     # http://www.baidu.com/201507/027/2.jpg
+    print "downloading " + url;
     re_ret = re.search(r'^http://(.+?)(/.+)$', url)
     host = re_ret.group(1)
     path = re_ret.group(2)

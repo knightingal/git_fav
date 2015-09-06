@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404
 import json
 import codecs
 import http
+import pdb
 # Create your views here.
 def index(requeset):
     # return HttpResponse("this is local1000/index")
@@ -18,7 +19,10 @@ def index(requeset):
 
 def urls1000(request):
     request_body = request.body.decode('utf-8')
+
     request_obj = json.loads(request_body, 'uft-8')
+    # pdb.set_trace()
+
     title = request_obj["title"]
     request_body_fmt = json.dumps(request_obj, ensure_ascii=False, indent=2)
     img_src_array = request_obj["imgSrcArray"]
@@ -26,6 +30,7 @@ def urls1000(request):
     print request_body_fmt
     for url in img_src_array:
         http.download(url)
+    return HttpResponse("111")
 
 def repertory(request, rep_id):
     r = get_object_or_404(PicRepertory, pk=rep_id)

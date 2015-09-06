@@ -3,7 +3,7 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    # ex: /polls/
+    # ex: /local1000/
     url(r'^$', views.index, name='index'),
     url(r'^urls1000/$', views.urls1000),
     url(r'^repertory/(?P<rep_id>[0-9]+)/$', views.repertory),
