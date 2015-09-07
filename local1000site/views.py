@@ -17,6 +17,20 @@ def index(requeset):
     })
     return HttpResponse(template.render(context))
 
+def pic_index_ajax(request):
+    pic_repertories = PicRepertory.objects.all()
+    pic_repertory_list = []
+    for pic_repertory in pic_repertories:
+        name = pic_repertory.rep_name
+        mtime = pic_repertory.pub_date
+        index = pic_repertory.id
+        pic_repertory_list.append({"name": name, "mtime": str(mtime), "index": index})
+    result_body = json.dumps(pic_repertory_list, ensure_ascii=False, indent=2)
+    return HttpResponse(result_body)
+
+
+
+
 def urls1000(request):
     request_body = request.body.decode('utf-8')
 

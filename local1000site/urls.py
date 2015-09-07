@@ -7,6 +7,7 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^urls1000/$', views.urls1000),
     url(r'^repertory/(?P<rep_id>[0-9]+)/$', views.repertory),
+    url(r'^picIndexAjax/', views.pic_index_ajax),
     # ex: /polls/5/
     # url(r'^(?P<question_id>[0-9]+)/$', views.detail, name='detail'),
     # ex: /polls/5/results/
