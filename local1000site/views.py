@@ -29,14 +29,26 @@ def pic_index_ajax(request):
     return HttpResponse(result_body)
 
 
+def pic_content_ajax(request):
+    rep_id = request.GET.get("id")
+    r = get_object_or_404(PicRepertory, pk=rep_id)
+    pic_instances = PicInstance.objects.filter(repertory=r)
+    pic_names = []
+    for pic_instance in pic_instances:
+        pic_names.append(pic_instance.pic_name)
+
+    result_obj = {
+        "dirName": r.rep_name,
+        "picpage": rep_id,
+        "pics": pic_names,
+    }
+    result_body = json.dumps(result_obj, ensure_ascii=False, indent=2)
+    return HttpResponse(result_body)
 
 
 def urls1000(request):
     request_body = request.body.decode('utf-8')
-
     request_obj = json.loads(request_body, 'uft-8')
-    # pdb.set_trace()
-
     title = request_obj["title"]
     request_body_fmt = json.dumps(request_obj, ensure_ascii=False, indent=2)
     img_src_array = request_obj["imgSrcArray"]
