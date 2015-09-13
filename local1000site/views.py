@@ -7,6 +7,7 @@ import json
 import codecs
 import http
 import pdb
+import os
 # Create your views here.
 def index(requeset):
     # return HttpResponse("this is local1000/index")
@@ -45,6 +46,7 @@ def pic_content_ajax(request):
     result_body = json.dumps(result_obj, ensure_ascii=False, indent=2)
     return HttpResponse(result_body)
 
+RootDir = 'D:/Python27/testdir/testsubdir/linux1000/'
 
 def urls1000(request):
     request_body = request.body.decode('utf-8')
@@ -54,8 +56,10 @@ def urls1000(request):
     img_src_array = request_obj["imgSrcArray"]
     print img_src_array
     print request_body_fmt
+    dir = RootDir + title + '/'
+    os.mkdir(dir)
     for url in img_src_array:
-        http.download(url)
+        http.download(url, dir)
     return HttpResponse("111")
 
 def repertory(request, rep_id):

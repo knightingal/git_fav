@@ -1,6 +1,6 @@
 import httplib
 import re
-def download(url):
+def download(url, dir):
     # http://www.baidu.com/201507/027/2.jpg
     print "downloading " + url;
     re_ret = re.search(r'^http://(.+?)(/.+)$', url)
@@ -22,7 +22,7 @@ def download(url):
     })
     resp = conn.getresponse()
     img_content = resp.read()
-    fp = open(img_name, "wb")
+    fp = open(dir + img_name, "wb")
     fp.write(img_content)
     fp.close()
 
