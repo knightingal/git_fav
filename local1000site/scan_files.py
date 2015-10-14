@@ -13,8 +13,11 @@ def main():
             rep_name = unicode(re.split(r'[\\|/]', root)[-1], 'gbk')
             pic_repertory = PicRepertory(rep_name=rep_name, pub_date=timezone.now())
             pic_repertory.save()
+            print rep_name
+            img_files = sorted(img_files, key=lambda x: int(x.split('.')[0]))
             for img_file in img_files:
                 PicInstance(pic_name=img_file, repertory=pic_repertory).save()
+                # print img_file
 
 if __name__ == "__main__":
     main()

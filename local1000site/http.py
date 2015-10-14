@@ -25,5 +25,6 @@ def download(url, dir):
     fp = open(dir + img_name, "wb")
     fp.write(img_content)
     fp.close()
+    return img_name
 
 

@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.template import RequestContext, loader
 from .models import PicRepertory, PicInstance
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 import json
 import codecs
 import http
@@ -58,8 +59,11 @@ def urls1000(request):
     print request_body_fmt
     dir = RootDir + title + '/'
     os.mkdir(dir)
+    pic_repertory = PicRepertory(rep_name=title, pub_date=timezone.now())
+    pic_repertory.save()
     for url in img_src_array:
-        http.download(url, dir)
+        img_name = http.download(url, dir)
+        PicInstance(pic_name=img_name, repertory=pic_repertory).save()
     return HttpResponse("111")
 
 def repertory(request, rep_id):
