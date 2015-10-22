@@ -4,6 +4,7 @@ from django.template import RequestContext, loader
 from .models import PicRepertory, PicInstance
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
+from datetime import datetime, time
 import json
 import codecs
 import http
@@ -20,7 +21,13 @@ def index(requeset):
     return HttpResponse(template.render(context))
 
 def pic_index_ajax(request):
-    pic_repertories = PicRepertory.objects.all()
+    time_stamp = request.GET.get("time_stamp")
+    if time_stamp is not None and time_stamp != "":
+        dt_temp = datetime.strptime(time_stamp, "%Y-%m-%d %H:%M:%S")
+        dt = datetime(dt_temp.year, dt_temp.month, dt_temp.day, dt_temp.hour, dt_temp.minute, dt_temp.second)
+    else:
+        dt = datetime(2000, 01, 01, 00, 00, 00)
+    pic_repertories = PicRepertory.objects.filter(pub_date__gte=dt)
     pic_repertory_list = []
     for pic_repertory in pic_repertories:
         name = pic_repertory.rep_name
