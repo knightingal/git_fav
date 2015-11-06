@@ -23,7 +23,7 @@ def index(requeset):
 def pic_index_ajax(request):
     time_stamp = request.GET.get("time_stamp")
     if time_stamp is not None and time_stamp != "":
-        dt_temp = datetime.strptime(time_stamp, "%Y-%m-%d %H:%M:%S")
+        dt_temp = datetime.strptime(time_stamp, "%Y%m%d%H%M%S")
         dt = datetime(dt_temp.year, dt_temp.month, dt_temp.day, dt_temp.hour, dt_temp.minute, dt_temp.second)
     else:
         dt = datetime(2000, 01, 01, 00, 00, 00)
@@ -60,17 +60,29 @@ def urls1000(request):
     request_body = request.body.decode('utf-8')
     request_obj = json.loads(request_body, 'uft-8')
     title = request_obj["title"]
+    d = datetime.now()
+    tz_now = timezone.now()
+    title = d.strftime('%Y%m%d%H%M%S') + title
     request_body_fmt = json.dumps(request_obj, ensure_ascii=False, indent=2)
     img_src_array = request_obj["imgSrcArray"]
     print img_src_array
     print request_body_fmt
     dir = RootDir + title + '/'
     os.mkdir(dir)
-    pic_repertory = PicRepertory(rep_name=title, pub_date=timezone.now())
-    pic_repertory.save()
+
+    pic_instance_list = []
     for url in img_src_array:
         img_name = http.download(url, dir)
-        PicInstance(pic_name=img_name, repertory=pic_repertory).save()
+        pic_instance_list.append(PicInstance(pic_name=img_name))
+
+    pic_repertory = PicRepertory(rep_name=title, pub_date=tz_now)
+    pic_repertory.save()
+
+    for pic_instance in pic_instance_list:
+        pic_instance.repertory = pic_repertory
+
+    PicInstance.objects.bulk_create(pic_instance_list)
+
     return HttpResponse("111")
 
 def repertory(request, rep_id):
