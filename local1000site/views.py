@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import RequestContext, loader
-from .models import PicRepertory, PicInstance
+from .models import PicRepertory, PicInstance, ShipRepertory, ShipPic
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from datetime import datetime, time
@@ -55,6 +55,31 @@ def pic_content_ajax(request):
     return HttpResponse(result_body)
 
 RootDir = 'D:/Python27/testdir/testsubdir/linux1000/'
+
+def navy(request):
+    request_body = request.body.decode('utf-8')
+    request_obj = json.loads(request_body, 'uft-8')
+    # request_body_fmt = json.dumps(request_obj, ensure_ascii=False, indent=2)
+    # print request_obj
+
+    title = request_obj["title"]
+
+    ship_repertory = ShipRepertory(ship_name=title, dir_name="")
+    ship_repertory.save()
+    img_array = request_obj["imgArray"]
+    ship_pic_list = []
+    for img in img_array:
+        pic_url = img["imrSrc"]
+        pic_description = img["description"]
+        pic_copyright = img["copyright"]
+        ship = ship_repertory
+        ship_pic_list.append(ShipPic(pic_name="",
+                                     pic_url=pic_url, pic_description=pic_description, pic_copyright=pic_copyright,
+                                     ship=ship))
+
+    ShipPic.objects.bulk_create(ship_pic_list)
+
+    return HttpResponse("111")
 
 def urls1000(request):
     request_body = request.body.decode('utf-8')
