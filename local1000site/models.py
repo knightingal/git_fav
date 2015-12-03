@@ -19,7 +19,7 @@ class PicInstance(models.Model):
 
 class ShipRepertory(models.Model):
     ship_name = models.CharField(max_length=256)
-    dir_name = models.CharField(max_length=16)
+    dir_name = models.CharField(max_length=256)
 
     def __unicode__(self):
         return self.ship_name

@@ -63,9 +63,12 @@ def navy(request):
     # print request_obj
 
     title = request_obj["title"]
-
-    ship_repertory = ShipRepertory(ship_name=title, dir_name="")
+    dir_name = title.replace(' ', '_')
+    ship_repertory = ShipRepertory(ship_name=title, dir_name=dir_name)
     ship_repertory.save()
+
+    dir = RootDir + dir_name + '/'
+    os.mkdir(dir)
     img_array = request_obj["imgArray"]
     ship_pic_list = []
     for img in img_array:
@@ -76,13 +79,16 @@ def navy(request):
         ship_pic_list.append(ShipPic(pic_name="",
                                      pic_url=pic_url, pic_description=pic_description, pic_copyright=pic_copyright,
                                      ship=ship))
+        img_name = http.download(pic_url, dir)
 
     ShipPic.objects.bulk_create(ship_pic_list)
 
     return HttpResponse("111")
 
 def urls1000(request):
+    http.post_body_to_node(request.body)
     request_body = request.body.decode('utf-8')
+
     request_obj = json.loads(request_body, 'uft-8')
     title = request_obj["title"]
     d = datetime.now()
@@ -97,7 +103,8 @@ def urls1000(request):
 
     pic_instance_list = []
     for url in img_src_array:
-        img_name = http.download(url, dir)
+        # img_name = http.download(url, dir)
+        img_name = http.parse_img_name(url)
         pic_instance_list.append(PicInstance(pic_name=img_name))
 
     pic_repertory = PicRepertory(rep_name=title, pub_date=tz_now)
