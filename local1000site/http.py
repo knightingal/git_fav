@@ -58,7 +58,8 @@ def post_body_to_node(body):
         "User-Agent": "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0",
     })
     response = conn.getresponse()
-    response.read()
+    ret_body = response.read()
     conn.close()
+    return ret_body
 
 

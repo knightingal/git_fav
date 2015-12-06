@@ -1,15 +1,14 @@
-from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import RequestContext, loader
 from .models import PicRepertory, PicInstance, ShipRepertory, ShipPic
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
-from datetime import datetime, time
+from datetime import datetime
 import json
-import codecs
 import http
-import pdb
 import os
+
+
 # Create your views here.
 def index(requeset):
     # return HttpResponse("this is local1000/index")
@@ -19,6 +18,7 @@ def index(requeset):
         'pic_repertories': pic_repertories,
     })
     return HttpResponse(template.render(context))
+
 
 def pic_index_ajax(request):
     time_stamp = request.GET.get("time_stamp")
@@ -56,6 +56,7 @@ def pic_content_ajax(request):
 
 RootDir = 'D:/Python27/testdir/testsubdir/linux1000/'
 
+
 def navy(request):
     request_body = request.body.decode('utf-8')
     request_obj = json.loads(request_body, 'uft-8')
@@ -67,8 +68,8 @@ def navy(request):
     ship_repertory = ShipRepertory(ship_name=title, dir_name=dir_name)
     ship_repertory.save()
 
-    dir = RootDir + dir_name + '/'
-    os.mkdir(dir)
+    full_dir = RootDir + dir_name + '/'
+    os.mkdir(full_dir)
     img_array = request_obj["imgArray"]
     ship_pic_list = []
     for img in img_array:
@@ -85,21 +86,23 @@ def navy(request):
 
     return HttpResponse("111")
 
+
 def urls1000(request):
-    http.post_body_to_node(request.body)
+    title = http.post_body_to_node(request.body)
+
     request_body = request.body.decode('utf-8')
 
     request_obj = json.loads(request_body, 'uft-8')
-    title = request_obj["title"]
+    # title = request_obj["title"]
     d = datetime.now()
     tz_now = timezone.now()
-    title = d.strftime('%Y%m%d%H%M%S') + title
+    # title = d.strftime('%Y%m%d%H%M%S') + title
     request_body_fmt = json.dumps(request_obj, ensure_ascii=False, indent=2)
     img_src_array = request_obj["imgSrcArray"]
     print img_src_array
     print request_body_fmt
-    dir = RootDir + title + '/'
-    os.mkdir(dir)
+    full_dir = RootDir + title + '/'
+    # os.mkdir(full_dir)
 
     pic_instance_list = []
     for url in img_src_array:
@@ -117,6 +120,7 @@ def urls1000(request):
 
     return HttpResponse("111")
 
+
 def repertory(request, rep_id):
     r = get_object_or_404(PicRepertory, pk=rep_id)
     pic_instances = PicInstance.objects.filter(repertory=r)
@@ -129,6 +133,3 @@ def repertory(request, rep_id):
         'pic_instances': pic_instances
     })
     return HttpResponse(template.render(context))
-
-
-
