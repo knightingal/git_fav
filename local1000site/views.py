@@ -26,7 +26,7 @@ def pic_index_ajax(request):
         dt_temp = datetime.strptime(time_stamp, "%Y%m%d%H%M%S")
         dt = datetime(dt_temp.year, dt_temp.month, dt_temp.day, dt_temp.hour, dt_temp.minute, dt_temp.second)
     else:
-        dt = datetime(2000, 01, 01, 00, 00, 00)
+        dt = datetime(2000, 1, 1, 00, 00, 00)
     pic_repertories = PicRepertory.objects.filter(pub_date__gte=dt)
     pic_repertory_list = []
     for pic_repertory in pic_repertories:
@@ -99,8 +99,8 @@ def urls1000(request):
     # title = d.strftime('%Y%m%d%H%M%S') + title
     request_body_fmt = json.dumps(request_obj, ensure_ascii=False, indent=2)
     img_src_array = request_obj["imgSrcArray"]
-    print img_src_array
-    print request_body_fmt
+    print(img_src_array)
+    print(request_body_fmt)
     full_dir = RootDir + title + '/'
     # os.mkdir(full_dir)
 

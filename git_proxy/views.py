@@ -8,7 +8,7 @@ def index(request):
     for web_page in web_page_list:
         web_page_json_array.append({"page_name": web_page.page_name, "page_url": web_page.page_url})
     web_page_json = json.dumps(web_page_json_array, ensure_ascii=False, indent=2)
-    print web_page_json
+    print(web_page_json)
     fd = codecs.open("web_page.json", 'w', 'utf-8')
     fd.write(web_page_json)
     fd.close()
