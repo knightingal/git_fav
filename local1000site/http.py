@@ -1,5 +1,7 @@
-import httplib
+import http.client
 import re
+
+
 def parse_img_name(url):
     re_ret = re.search(r'^http://(.+?)(/.+)$', url)
     path = re_ret.group(2)
@@ -7,9 +9,10 @@ def parse_img_name(url):
     img_name = re_ret.group(1)
     return img_name
 
+
 def download(url, dir):
     # http://www.baidu.com/201507/027/2.jpg
-    print "downloading " + url
+    # print "downloading " + url
     re_ret = re.search(r'^http://(.+?)(/.+)$', url)
     host = re_ret.group(1)
     path = re_ret.group(2)
@@ -17,7 +20,7 @@ def download(url, dir):
     re_ret = re.search(r'^.+/(.+)$', path)
     img_name = re_ret.group(1)
     while True:
-        conn = httplib.HTTPConnection(host)
+        conn = http.client.HTTPConnection(host)
         conn.request("GET", path, headers={
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
             "Accept-Encoding": "gzip, deflate",
@@ -36,8 +39,9 @@ def download(url, dir):
             fp.write(img_content)
             fp.close()
             break
-        print "download " + url + " failed, try again"
+        # print "download " + url + " failed, try again"
     return img_name
+
 
 def post_body_to_node(body):
     url = "http://127.0.0.1:8081/startDownload/"
@@ -45,7 +49,7 @@ def post_body_to_node(body):
     host = re_ret.group(1)
     path = re_ret.group(2)
 
-    conn = httplib.HTTPConnection(host)
+    conn = http.client.HTTPConnection(host)
     conn.request("POST", path, body=body, headers={
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
         "Accept-Encoding": "gzip, deflate",
@@ -61,5 +65,9 @@ def post_body_to_node(body):
     ret_body = response.read()
     conn.close()
     return ret_body
+
+
+if __name__ == "__main__":
+    download("http://www-file.huawei.com/~/media/CORPORATE/Images/home/small-banner/%E5%BE%90%E6%80%BB11-13.jpg", "./")
 
 
