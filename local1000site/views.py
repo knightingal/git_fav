@@ -5,16 +5,14 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from datetime import datetime
 import json
-import http
-import os
+from .my_http import post_body_to_node, parse_img_name
 
 
 # Create your views here.
-def index(requeset):
-    # return HttpResponse("this is local1000/index")
+def index(request):
     pic_repertories = PicRepertory.objects.all()
     template = loader.get_template('local1000site/index.html')
-    context = RequestContext(requeset, {
+    context = RequestContext(request, {
         'pic_repertories': pic_repertories,
     })
     return HttpResponse(template.render(context))
@@ -32,8 +30,8 @@ def pic_index_ajax(request):
     for pic_repertory in pic_repertories:
         name = pic_repertory.rep_name
         mtime = pic_repertory.pub_date
-        index = pic_repertory.id
-        pic_repertory_list.append({"name": name, "mtime": str(mtime), "index": index})
+        repertory_index = pic_repertory.id
+        pic_repertory_list.append({"name": name, "mtime": str(mtime), "index": repertory_index})
     result_body = json.dumps(pic_repertory_list, ensure_ascii=False, indent=2)
     return HttpResponse(result_body)
 
@@ -68,46 +66,55 @@ def navy(request):
     ship_repertory = ShipRepertory(ship_name=title, dir_name=dir_name)
     ship_repertory.save()
 
-    full_dir = RootDir + dir_name + '/'
-    os.mkdir(full_dir)
     img_array = request_obj["imgArray"]
     ship_pic_list = []
+    ship_pic_url_list = []
+    i = 0
     for img in img_array:
         pic_url = img["imrSrc"]
         pic_description = img["description"]
         pic_copyright = img["copyright"]
         ship = ship_repertory
-        ship_pic_list.append(ShipPic(pic_name="",
+        pic_name = str(i) + '-' + parse_img_name(pic_url)
+        ship_pic_list.append(ShipPic(pic_name=pic_name,
                                      pic_url=pic_url, pic_description=pic_description, pic_copyright=pic_copyright,
                                      ship=ship))
-        img_name = http.download(pic_url, dir)
+        ship_pic_url_list.append(pic_url)
+        i += 1
 
     ShipPic.objects.bulk_create(ship_pic_list)
+
+    ship_info = {
+        "name": dir_name,
+        "ship_pic_url_list": ship_pic_url_list,
+    }
+
+    ship_info_json = json.dumps(ship_info, indent=2)
+    print(ship_info_json)
+    dir_name = post_body_to_node("http://127.0.0.1:8081/navy/donwLoadNavy", ship_info_json)
+
+    ship_repertory.dir_name = dir_name
+    ship_repertory.save()
 
     return HttpResponse("111")
 
 
 def urls1000(request):
-    title = http.post_body_to_node(request.body)
+    title = post_body_to_node("http://127.0.0.1:8081/startDownload/", request.body)
 
     request_body = request.body.decode('utf-8')
 
     request_obj = json.loads(request_body, 'uft-8')
-    # title = request_obj["title"]
-    d = datetime.now()
     tz_now = timezone.now()
-    # title = d.strftime('%Y%m%d%H%M%S') + title
     request_body_fmt = json.dumps(request_obj, ensure_ascii=False, indent=2)
     img_src_array = request_obj["imgSrcArray"]
     print(img_src_array)
     print(request_body_fmt)
-    full_dir = RootDir + title + '/'
-    # os.mkdir(full_dir)
 
     pic_instance_list = []
     for url in img_src_array:
         # img_name = http.download(url, dir)
-        img_name = http.parse_img_name(url)
+        img_name = parse_img_name(url)
         pic_instance_list.append(PicInstance(pic_name=img_name))
 
     pic_repertory = PicRepertory(rep_name=title, pub_date=tz_now)

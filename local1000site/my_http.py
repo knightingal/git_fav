@@ -43,8 +43,8 @@ def download(url, dir):
     return img_name
 
 
-def post_body_to_node(body):
-    url = "http://127.0.0.1:8081/startDownload/"
+def post_body_to_node(url, body):
+    # url = "http://127.0.0.1:8081/navy/donwLoadNavy"
     re_ret = re.search(r'^http://(.+?)(/.+)$', url)
     host = re_ret.group(1)
     path = re_ret.group(2)
