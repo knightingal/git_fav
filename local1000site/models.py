@@ -27,6 +27,7 @@ class ShipRepertory(models.Model):
 
 class ShipPic(models.Model):
     pic_name = models.CharField(max_length=128)
+    pic_type = models.CharField(max_length=8, blank=True)
     pic_url = models.CharField(max_length=1024)
     pic_description = models.CharField(max_length=8192)
     pic_copyright = models.CharField(max_length=1024)
