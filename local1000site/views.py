@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from datetime import datetime
 import json
-from .my_http import post_body_to_node, parse_img_name
+from .my_http import post_body_to_node, parse_img_url
 
 
 # Create your views here.
@@ -75,7 +75,7 @@ def navy(request):
         pic_description = img["description"]
         pic_copyright = img["copyright"]
         ship = ship_repertory
-        pic_name = str(i) + '-' + parse_img_name(pic_url)
+        pic_name = str(i) + '-' + parse_img_url(pic_url)
         ship_pic_list.append(ShipPic(pic_name=pic_name,
                                      pic_url=pic_url, pic_description=pic_description, pic_copyright=pic_copyright,
                                      ship=ship))
@@ -114,7 +114,7 @@ def urls1000(request):
     pic_instance_list = []
     for url in img_src_array:
         # img_name = http.download(url, dir)
-        img_name = parse_img_name(url)
+        img_name = parse_img_url(url)
         pic_instance_list.append(PicInstance(pic_name=img_name))
 
     pic_repertory = PicRepertory(rep_name=title, pub_date=tz_now)
