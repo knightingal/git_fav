@@ -2,13 +2,18 @@ import http.client
 import re
 
 
-def parse_img_name(url):
+def parse_img_url(url):
     re_ret = re.search(r'^http://(.+?)(/.+)$', url)
     path = re_ret.group(2)
     re_ret = re.search(r'^.+/(.+)$', path)
     img_name = re_ret.group(1)
     return img_name
 
+
+def parse_img_name(img_name):
+    re_ret = re.search(r'^.+\.(.+)$', img_name)
+    img_type = re_ret.group(1)
+    return img_type
 
 def download(url, dir):
     # http://www.baidu.com/201507/027/2.jpg
