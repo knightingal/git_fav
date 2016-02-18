@@ -1,4 +1,8 @@
-import http.client
+import sys
+if sys.version_info.major == 3:
+    import http.client as http_client
+else:
+    import httplib as http_client
 import re
 
 
@@ -25,7 +29,8 @@ def download(url, dir):
     re_ret = re.search(r'^.+/(.+)$', path)
     img_name = re_ret.group(1)
     while True:
-        conn = http.client.HTTPConnection(host)
+        # conn = http.client.HTTPConnection(host)
+        conn = http_client.HTTPConnection(host)
         conn.request("GET", path, headers={
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
             "Accept-Encoding": "gzip, deflate",
@@ -54,7 +59,7 @@ def post_body_to_node(url, body):
     host = re_ret.group(1)
     path = re_ret.group(2)
 
-    conn = http.client.HTTPConnection(host)
+    conn = http_client.HTTPConnection(host)
     conn.request("POST", path, body=body, headers={
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
         "Accept-Encoding": "gzip, deflate",
