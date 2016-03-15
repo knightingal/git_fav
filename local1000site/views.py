@@ -76,7 +76,7 @@ def navy(request):
         pic_copyright = img["copyright"]
         ship = ship_repertory
         pic_name = str(i) + '-' + parse_img_url(pic_url)
-        pic_type = parse_img_name
+        pic_type = parse_img_name(pic_name)
         ship_pic_list.append(ShipPic(pic_name=pic_name, pic_type=pic_type,
                                      pic_url=pic_url, pic_description=pic_description, pic_copyright=pic_copyright,
                                      ship=ship))
