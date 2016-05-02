@@ -59,7 +59,7 @@ def navy(request):
     request_body = request.body.decode('utf-8')
     request_obj = json.loads(request_body, 'uft-8')
     # request_body_fmt = json.dumps(request_obj, ensure_ascii=False, indent=2)
-    # print request_obj
+    print request_obj
 
     title = request_obj["title"]
     dir_name = title.replace(' ', '_')
@@ -77,9 +77,18 @@ def navy(request):
         ship = ship_repertory
         pic_name = str(i) + '-' + parse_img_url(pic_url)
         pic_type = parse_img_name(pic_name)
-        ship_pic_list.append(ShipPic(pic_name=pic_name, pic_type=pic_type,
-                                     pic_url=pic_url, pic_description=pic_description, pic_copyright=pic_copyright,
-                                     ship=ship))
+        if len(pic_description) <= 8192:
+            ship_pic_list.append(ShipPic(pic_name=pic_name, pic_type=pic_type,
+                                         pic_url=pic_url, pic_description=pic_description, pic_copyright=pic_copyright,
+                                         ship=ship))
+        else:
+            ship_pic_list.append(ShipPic(pic_name=pic_name, pic_type=pic_type,
+                                         pic_url=pic_url, pic_description=pic_description[0:8192], pic_copyright=pic_copyright,
+                                         ship=ship))
+
+            ship_pic_list.append(ShipPic(pic_name=pic_name, pic_type=pic_type,
+                                         pic_url=pic_url, pic_description=pic_description[8192:], pic_copyright=pic_copyright,
+                                         ship=ship))
         ship_pic_url_list.append(pic_url)
         i += 1
 
