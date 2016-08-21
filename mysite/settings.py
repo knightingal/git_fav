@@ -79,10 +79,10 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'mysql.connector.django',
         'NAME': 'djangodb',
-        'USER': 'knightingal',
-        'PASSWORD': 'k14040842',
+        'USER': 'Knightingal',
+        'PASSWORD': '123456',
         # 'PASSWORD': 'yjmK14040842$',
         'HOST': '127.0.0.1',
     }
@@ -110,7 +110,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS= (
     os.path.join(BASE_DIR, "static"),
-    'D:/Python27/testdir/testsubdir/linux1000/',
+    'D:/Games/linux1000/',
 )
 
 # How to do
