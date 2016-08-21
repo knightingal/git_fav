@@ -6,6 +6,7 @@ from django.utils import timezone
 django.setup()
 from local1000site.models import PicRepertory, PicInstance
 
+
 def main():
     fd = open("local1000site_picrepertory.json", 'r')
     rep_content = fd.read()
@@ -21,7 +22,7 @@ def main():
     for rep_obj in rep_obj_list:
         rep_name = rep_obj["rep_name"]
         rep_id = rep_obj["id"]
-        print rep_name
+        print(rep_name)
         filted_instance_obj = filter(lambda instance: instance['repertory_id'] == rep_id, instance_obj)
         pic_repertory = PicRepertory(rep_name=rep_name, pub_date=timezone.now())
         pic_repertory.save()
