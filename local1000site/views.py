@@ -59,7 +59,7 @@ def navy(request):
     request_body = request.body.decode('utf-8')
     request_obj = json.loads(request_body, 'uft-8')
     # request_body_fmt = json.dumps(request_obj, ensure_ascii=False, indent=2)
-    print request_obj
+    print(request_obj)
 
     title = request_obj["title"]
     dir_name = title.replace(' ', '_')
@@ -128,6 +128,8 @@ def urls1000(request):
         pic_instance_list.append(PicInstance(pic_name=img_name))
 
     pic_repertory = PicRepertory(rep_name=title, pub_date=tz_now)
+    pic_instance_list[0].is_cover = 1
+    pic_repertory.cover = pic_instance_list[0].pic_name
     pic_repertory.save()
 
     for pic_instance in pic_instance_list:

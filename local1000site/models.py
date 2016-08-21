@@ -4,6 +4,7 @@ from django.db import models
 class PicRepertory(models.Model):
     rep_name = models.CharField(max_length=256)
     pub_date = models.DateTimeField()
+    cover = models.CharField(max_length=64)
 
     def __unicode__(self):
         return self.rep_name
@@ -12,6 +13,7 @@ class PicRepertory(models.Model):
 class PicInstance(models.Model):
     pic_name = models.CharField(max_length=64)
     repertory = models.ForeignKey(PicRepertory)
+    is_cover = models.IntegerField(default=0)
 
     def __unicode__(self):
         return self.pic_name
