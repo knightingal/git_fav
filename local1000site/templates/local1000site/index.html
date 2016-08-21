@@ -1,14 +1,52 @@
 {% if pic_repertories %}
+<style type="text/css">
+    div.left_list {
+        width: 512px;
+        height:100%;
+        overflow-y:scroll;
+        position: absolute;
+        top:0;
+        left:0;
+    }
+    div.imc_container {
+        overflow-y: auto;
+    }
+    #img_container {
+        margin-left: 512px;
+    }
+    body {
+        margin: 0;
+    }
+</style>
+<script type="text/javascript">
+    function onLoad() {
+        console.log(window);
+        document.getElementById("img_container").style.height = window.innerHeight + "px";
+    }
+    function mOver(obj) {
+        var index = obj.attributes.aindex.value;
+        var picname = obj.attributes.apicname.value;
+        var imgNode = document.getElementById("quick_img");
+        imgNode.src="/static/" + index + "/" + picname;
+    }
+</script>
+<body onload="onLoad()">
+<div class="left_list">
     <ul>
         {% for pic_repertory in pic_repertories %}
             <li>
                 <!--<a href="/polls/{{ question.id }}/">{{ question.question_text }}</a>-->
-                <a href="/local1000/repertory/{{ pic_repertory.id }}/">
+                <a href="/local1000/repertory/{{ pic_repertory.id }}/" aindex="{{ pic_repertory.rep_name }}" apicname="{{ pic_repertory.cover }}" onmouseover="mOver(this)">
                 {{ pic_repertory.rep_name }}
                 </a>
             </li>
         {% endfor %}
     </ul>
+</div>
+<div id="img_container" class="imc_container">
+    <img id="quick_img" class="littleimg" src="/static/{{ pic_repertories.0.rep_name }}/{{ pic_repertories.0.cover }}" />
+</div>
+</body>
 {% else %}
     <p>No polls are available.</p>
 {% endif %}
