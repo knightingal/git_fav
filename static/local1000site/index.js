@@ -7,9 +7,9 @@
     var rep_list;
 
     function onLoad() {
-        console.log(window);
-        document.getElementById("img_container").style.height = window.innerHeight + "px";
-        document.getElementById("repertory").style.height = window.innerHeight + "px";
+//        console.log(window);
+//        document.getElementById("img_container").style.height = window.innerHeight + "px";
+//        document.getElementById("repertory").style.height = window.innerHeight + "px";
         rep_list = document.getElementsByClassName("rep_list");
         repOver(null);
     }
