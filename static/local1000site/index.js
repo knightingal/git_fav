@@ -1,3 +1,11 @@
+    var ciphertext = CryptoJS.AES.encrypt('my message new', 'secret key 123');
+
+    // Decrypt
+    var bytes  = CryptoJS.AES.decrypt(ciphertext.toString(), 'secret key 123');
+    var plaintext = bytes.toString(CryptoJS.enc.Utf8);
+
+    console.log(plaintext);
+
     function repOver(obj) {
         for (i = 0; i < rep_list.length; i++) {
             rep_list[i].addEventListener("mouseover", mOver);
@@ -7,9 +15,6 @@
     var rep_list;
 
     function onLoad() {
-//        console.log(window);
-//        document.getElementById("img_container").style.height = window.innerHeight + "px";
-//        document.getElementById("repertory").style.height = window.innerHeight + "px";
         rep_list = document.getElementsByClassName("rep_list");
         repOver(null);
     }
