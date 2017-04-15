@@ -41,15 +41,45 @@
                     document.getElementById("repertory").appendChild(document.createElement("img"));
                 }
                 resp.pics.forEach((pic, index) => {
-                    fetch(`/static/source/${repName}/${pic}`).then(function(response) {
-                        return response.blob();
-                    }).then(function(blob) {
-                        var objectURL = URL.createObjectURL(blob);
-
-                        var img = document.getElementById("repertory").children[index];
-                        img.id=pic;
-                        img.src = objectURL;
-                    });
+                    var img = document.getElementById("repertory").children[index];
+                    fetchEncryptedImg(img, `/static/encrypted/${repName}/${pic}.bin`)
                 });
             });
     }
+
+const key = CryptoJS.enc.Utf8.parse("");
+const iv = CryptoJS.enc.Utf8.parse("123456789");
+
+const decryptArray = array => {
+    var words = CryptoJS.lib.WordArray;
+    words.init(array);
+
+
+    var decrypted = CryptoJS.AES.decrypt(CryptoJS.enc.Base64.stringify(words), key, {
+        iv: iv,
+        mode:CryptoJS.mode.CFB,
+        padding: CryptoJS.pad.ZeroPadding
+    });
+
+    var uI8Array = new Uint8Array(decrypted.words.length * 4);
+    decrypted.words.forEach((word, index) => {
+        uI8Array[index * 4 + 3] = word & 0xff;
+        uI8Array[index * 4 + 2] = word >>> 8 & 0xff;
+        uI8Array[index * 4 + 1] = word >>> 16 & 0xff;
+        uI8Array[index * 4] = word >>> 24 & 0xff;
+    });
+
+    return uI8Array;
+}
+
+const fetchEncryptedImg = (imgNode, url) => {
+    fetch(url).then(function(response) {
+        return response.arrayBuffer();
+    }).then(function(arrayBuffer) {
+        var decrypted = decryptArray(arrayBuffer);
+        var objectURL = URL.createObjectURL(new Blob([decrypted]));
+
+        imgNode.src = objectURL;
+    });
+}
+
