@@ -1,11 +1,3 @@
-    var ciphertext = CryptoJS.AES.encrypt('my message new', 'secret key 123');
-
-    // Decrypt
-    var bytes  = CryptoJS.AES.decrypt(ciphertext.toString(), 'secret key 123');
-    var plaintext = bytes.toString(CryptoJS.enc.Utf8);
-
-    console.log(plaintext);
-
     function repOver(obj) {
         for (i = 0; i < rep_list.length; i++) {
             rep_list[i].addEventListener("mouseover", mOver);
@@ -26,7 +18,7 @@
             var index = event.target.children[0].attributes.aindex.value;
             var picname = event.target.children[0].attributes.apicname.value;
             var imgNode = document.getElementById("quick_img");
-            imgNode.src="/static/" + index + "/" + picname;
+            imgNode.src="/static/source/" + index + "/" + picname;
         }
     }
 
@@ -45,11 +37,19 @@
             .then(function(resp) {
                 console.log(resp);
                 var repName = resp.dirName;
-                for (var pic of resp.pics) {
-                    var img = document.createElement("img");
-                    img.src = `/static/${repName}/${pic}`
-                    document.getElementById("repertory").appendChild(img);
+                for (var i = 0; i < resp.pics.length; i++) {
+                    document.getElementById("repertory").appendChild(document.createElement("img"));
                 }
-                document.getElementById("repertory").appendChild(document.createElement("p"));
+                resp.pics.forEach((pic, index) => {
+                    fetch(`/static/source/${repName}/${pic}`).then(function(response) {
+                        return response.blob();
+                    }).then(function(blob) {
+                        var objectURL = URL.createObjectURL(blob);
+
+                        var img = document.getElementById("repertory").children[index];
+                        img.id=pic;
+                        img.src = objectURL;
+                    });
+                });
             });
     }
