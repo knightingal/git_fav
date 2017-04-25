@@ -18,7 +18,7 @@
             var index = event.target.children[0].attributes.aindex.value;
             var picname = event.target.children[0].attributes.apicname.value;
             var imgNode = document.getElementById("quick_img");
-            imgNode.src="/static/source/" + index + "/" + picname;
+            fetchEncryptedImg(imgNode, `/static/encrypted/${index}/${picname}.bin`)
         }
     }
 
@@ -42,20 +42,20 @@
                 }
                 resp.pics.forEach((pic, index) => {
                     var img = document.getElementById("repertory").children[index];
+                    img.id="img" + index;
                     fetchEncryptedImg(img, `/static/encrypted/${repName}/${pic}.bin`)
                 });
             });
     }
 
-const key = CryptoJS.enc.Utf8.parse("");
-const iv = CryptoJS.enc.Utf8.parse("123456789");
+const iv = CryptoJS.enc.Utf8.parse("201704162125");
 
 const decryptArray = array => {
     var words = CryptoJS.lib.WordArray;
     words.init(array);
 
 
-    var decrypted = CryptoJS.AES.decrypt(CryptoJS.enc.Base64.stringify(words), key, {
+    var decrypted = CryptoJS.AES.decrypt(CryptoJS.enc.Base64.stringify(words), document.key, {
         iv: iv,
         mode:CryptoJS.mode.CFB,
         padding: CryptoJS.pad.ZeroPadding
