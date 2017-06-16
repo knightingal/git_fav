@@ -48,7 +48,7 @@
             });
     }
 
-const iv = CryptoJS.enc.Utf8.parse("201704162125");
+const iv = CryptoJS.enc.Utf8.parse("2017041621251234");
 
 const decryptArray = array => {
     var words = CryptoJS.lib.WordArray;

@@ -124,7 +124,7 @@ def urls1000(request):
     pic_instance_list = []
     for url in img_src_array:
         # img_name = http.download(url, dir)
-        img_name = parse_img_url(url)
+        img_name = parse_img_url(url['src'])
         pic_instance_list.append(PicInstance(pic_name=img_name))
 
     pic_repertory = PicRepertory(rep_name=title, pub_date=tz_now)
