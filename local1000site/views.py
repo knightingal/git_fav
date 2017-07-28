@@ -25,7 +25,7 @@ def pic_index_ajax(request):
         dt = datetime(dt_temp.year, dt_temp.month, dt_temp.day, dt_temp.hour, dt_temp.minute, dt_temp.second)
     else:
         dt = datetime(2000, 1, 1, 00, 00, 00)
-    pic_repertories = PicRepertory.objects.filter(pub_date__gte=dt).order_by('-pub_date')
+    pic_repertories = PicRepertory.objects.filter(pub_date__gte=dt).order_by('pub_date')
     pic_repertory_list = []
     for pic_repertory in pic_repertories:
         name = pic_repertory.rep_name
